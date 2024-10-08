@@ -45,6 +45,3 @@ def logout_view(request):
     return render(request, 'accounts/logout.html')
 
 
-def home_view(request):
-    products = Product.objects.all()  # Получаем все продукты из базы данных
-    return render(request, 'flower_shop/home.html', {'products': products})
