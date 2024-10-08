@@ -4,9 +4,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse
 from .models import Product
 
-def home_view(request):
-    return render(request, 'home.html')
-
 
 def register_view(request):
     if request.method == 'POST':
