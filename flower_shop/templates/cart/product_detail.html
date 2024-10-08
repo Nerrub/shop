@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }}</title>
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 400px; height: 400px;">
+    <p>Description: {{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+    <a href="{% url 'cart:catalog' %}">Back to Catalog</a>
+</body>
+</html>

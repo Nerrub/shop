@@ -18,3 +18,12 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     cart = Cart(request)
     return render(request, 'cart/detail.html', {'cart': cart})
+
+
+def flower_catalog(request):
+    flowers = Flower.objects.all()
+    return render(request, 'cart/flower_catalog.html', {'flowers': flowers})
+
+def product_detail_view(request, product_id):
+    product = get_object_or_404(Product, id=product_id)  # Получаем продукт по ID или возвращаем 404, если не найден
+    return render(request, 'cart/product_detail.html', {'product': product})

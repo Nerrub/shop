@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse
+from .models import Product
 
 def home_view(request):
     return render(request, 'home.html')
@@ -42,3 +43,8 @@ def logout_view(request):
         logout(request)
         return redirect('login')
     return render(request, 'accounts/logout.html')
+
+
+def home_view(request):
+    products = Product.objects.all()  # Получаем все продукты из базы данных
+    return render(request, 'flower_shop/home.html', {'products': products})
