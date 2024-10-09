@@ -21,7 +21,7 @@ def cart_detail(request):
 
 
 def flower_catalog(request):
-    flowers = Flower.objects.all()
+    flowers = Product.objects.all()
     return render(request, 'cart/flower_catalog.html', {'flowers': flowers})
 
 def product_detail_view(request, product_id):
