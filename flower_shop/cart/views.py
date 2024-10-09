@@ -2,6 +2,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .cart import Cart
 from .models import Product
+from .forms import OrderForm
+from .models import Order
 
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -34,3 +36,30 @@ def cart_remove(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     return redirect('cart:cart_detail')
+
+
+def checkout_view(request):
+    cart = Cart(request)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            # Сохраняем заказ
+            order = Order(
+                name=form.cleaned_data['name'],
+                address=form.cleaned_data['address'],
+                phone=form.cleaned_data['phone']
+            )
+            order.save()
+
+            # Очистка корзины
+            cart.clear()
+
+            return redirect('cart:order_success')
+    else:
+        form = OrderForm()
+
+    return render(request, 'cart/checkout.html', {'form': form, 'cart': cart})
+
+def order_success_view(request):
+    return render(request, 'cart/order_success.html')
