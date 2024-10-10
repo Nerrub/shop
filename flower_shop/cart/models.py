@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -22,12 +22,25 @@ class Flower(models.Model):
 # cart/models.py
 from django.db import models
 
+
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('accepted', 'Accepted'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='accepted',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order {self.id} - {self.name}"
+        return f"Order #{self.id} - {self.status}"

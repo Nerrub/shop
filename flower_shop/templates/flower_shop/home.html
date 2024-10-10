@@ -10,6 +10,8 @@
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}! You are logged in.</p>
         <a href="{% url 'accounts:logout' %}">Logout</a>
+        <!-- Ссылка на личный кабинет пользователя -->
+        <a href="{% url 'accounts:profile' %}">My Account</a>
     {% else %}
         <a href="{% url 'accounts:login' %}">Login</a>
     {% endif %}

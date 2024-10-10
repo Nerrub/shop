@@ -44,11 +44,12 @@ def checkout_view(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Сохраняем заказ
+            # Сохраняем заказ, связывая его с текущим пользователем
             order = Order(
                 name=form.cleaned_data['name'],
                 address=form.cleaned_data['address'],
-                phone=form.cleaned_data['phone']
+                phone=form.cleaned_data['phone'],
+                user=request.user  # Связываем заказ с текущим пользователем
             )
             order.save()
 
@@ -63,3 +64,7 @@ def checkout_view(request):
 
 def order_success_view(request):
     return render(request, 'cart/order_success.html')
+
+def order_history_view(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'cart/order_history.html', {'orders': orders})

@@ -1,6 +1,7 @@
 # cart/urls.py
 from django.urls import path
 from . import views
+from .views import order_history_view
 
 app_name = 'cart'
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path('remove/<int:product_id>/', views.cart_remove, name='remove_from_cart'),
     path('checkout/', views.checkout_view, name='checkout'),
     path('order-success/', views.order_success_view, name='order_success'),
+    path('order-history/', order_history_view, name='order_history'),
 ]
 
 

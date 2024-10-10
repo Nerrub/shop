@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History</title>
+</head>
+<body>
+    <h1>Order History</h1>
+    <ul>
+        {% for order in orders %}
+            <li>
+                <strong>Order ID:</strong> {{ order.id }} <br>
+                <strong>Status:</strong> {{ order.get_status_display }} <br>
+                <strong>Address:</strong> {{ order.address }} <br>
+                <strong>Phone:</strong> {{ order.phone }} <br>
+                <strong>Date:</strong> {{ order.created_at }} <br>
+            </li>
+        {% empty %}
+            <p>No orders found.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

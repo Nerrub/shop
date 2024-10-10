@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse
 from .models import Product
-
+from cart.models import Order
 
 def register_view(request):
     if request.method == 'POST':
@@ -41,4 +41,9 @@ def logout_view(request):
         return redirect('login')
     return render(request, 'accounts/logout.html')
 
+
+def profile_view(request):
+    # Получаем заказы, принадлежащие текущему пользователю
+    orders = Order.objects.filter(user=request.user)
+    return render(request, 'accounts/profile.html', {'orders': orders})
 
