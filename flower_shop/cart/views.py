@@ -68,3 +68,9 @@ def order_success_view(request):
 def order_history_view(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'cart/order_history.html', {'orders': orders})
+
+def reorder_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    # Логика для повторного добавления продуктов из заказа в корзину
+
+    return redirect('cart:checkout')

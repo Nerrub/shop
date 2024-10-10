@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse
 from .models import Product
 from cart.models import Order
+from django.shortcuts import get_object_or_404
 
 def register_view(request):
     if request.method == 'POST':
@@ -47,3 +48,28 @@ def profile_view(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'accounts/profile.html', {'orders': orders})
 
+def reorder_view(request, order_id):
+    # Получаем заказ, который нужно повторить
+    original_order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    # Создаем новый заказ на основе оригинального
+    new_order = Order.objects.create(
+        user=request.user,
+        name=original_order.name,
+        address=original_order.address,
+        phone=original_order.phone,
+        status='accepted',  # Устанавливаем статус как 'accepted'
+    )
+
+    # Копируем элементы из оригинального заказа в новый заказ
+    for item in original_order.items.all():
+        new_item = OrderItem.objects.create(
+            order=new_order,
+            product=item.product,
+            quantity=item.quantity,
+            price=item.price,
+        )
+        new_item.save()
+
+    # Перенаправляем пользователя на страницу истории заказов
+    return redirect('accounts:profile')

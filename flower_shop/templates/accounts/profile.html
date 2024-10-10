@@ -22,6 +22,10 @@
                             <li>{{ item.product.name }} - Quantity: {{ item.quantity }}</li>
                         {% endfor %}
                     </ul>
+                    <form action="{% url 'cart:reorder' order.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Reorder</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
