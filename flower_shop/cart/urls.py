@@ -17,6 +17,7 @@ urlpatterns = [
     path('order-success/', views.order_success_view, name='order_success'),
     path('order-history/', order_history_view, name='order_history'),
     path('reorder/<int:order_id>/', views.reorder_view, name='reorder'),
+    path('product/<int:product_id>/review/', views.add_review, name='add_review'),
 ]
 
 

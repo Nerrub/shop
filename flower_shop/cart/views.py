@@ -4,6 +4,10 @@ from .cart import Cart
 from .models import Product
 from .forms import OrderForm
 from .models import Order
+from .models import Product, Review
+from .forms import ReviewForm
+from django.contrib.auth.decorators import login_required
+
 
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -74,3 +78,17 @@ def reorder_view(request, order_id):
     # Логика для повторного добавления продуктов из заказа в корзину
 
     return redirect('cart:checkout')
+
+def add_review(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.user = request.user
+            review.save()
+            return redirect('cart:product_detail', product_id=product.id)
+    else:
+        form = ReviewForm()
+    return render(request, 'cart/add_review.html', {'form': form, 'product': product})

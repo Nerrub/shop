@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leave a Review</title>
+</head>
+<body>
+    <h1>Leave a Review for {{ product.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <a href="{% url 'cart:product_detail' product.id %}">Back to Product</a>
+</body>
+</html>
