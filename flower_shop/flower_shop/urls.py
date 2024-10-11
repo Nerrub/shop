@@ -8,5 +8,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('', home_view, name='home'),
-    path('', include('main.urls', namespace='main')),
+    path('analytics/', include('analytics.urls')),
 ]

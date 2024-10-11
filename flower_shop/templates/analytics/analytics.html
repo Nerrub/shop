@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Отчет по заказам</title>
+</head>
+<body>
+    <h1>Отчет по заказам</h1>
+
+    <p>Всего заказов: {{ total_orders }}</p>
+    <p>Общая сумма заработка: ${{ total_revenue }}</p>
+
+    <h2>Детали заказов</h2>
+    <ul>
+        {% for order in orders %}
+            <li>
+                Заказ #{{ order.id }} - Статус: {{ order.get_status_display }} - Дата: {{ order.created_at }}<br>
+                <strong>Адрес:</strong> {{ order.address }}<br>
+                <strong>Телефон:</strong> {{ order.phone }}
+                <ul>
+                    {% for item in order.items.all %}
+                        <li>{{ item.product.name }} - Количество: {{ item.quantity }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

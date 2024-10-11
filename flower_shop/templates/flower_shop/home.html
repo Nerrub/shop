@@ -12,6 +12,11 @@
         <a href="{% url 'accounts:logout' %}">Logout</a>
         <!-- Ссылка на личный кабинет пользователя -->
         <a href="{% url 'accounts:profile' %}">My Account</a>
+        <!-- Проверка, является ли пользователь администратором -->
+        {% if user.is_staff %}
+            <br>
+            <a href="{% url 'analytics:generate_report' %}">Generate Report</a>
+        {% endif %}
     {% else %}
         <a href="{% url 'accounts:login' %}">Login</a>
     {% endif %}
