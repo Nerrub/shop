@@ -29,9 +29,17 @@ def generate_report(request):
 
 
 def create_report_view(request):
+    # Получаем все заказы
     orders = Order.objects.all()
+
+    # Подсчитываем количество заказов и общую выручку
     total_orders = orders.count()
-    total_revenue = sum(order.get_total_price() for order in orders)
+    total_revenue = sum(order.total_price for order in orders)
+
+    # Обновляем стоимость заказа, если она еще не была рассчитана
+    for order in orders:
+        if order.total_price == 0:
+            order.calculate_total_price()
 
     context = {
         'orders': orders,
