@@ -7,7 +7,8 @@ from .models import Order
 from .models import Product, Review
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
-
+from bot.telegram_bot import send_order_notification
+import asyncio
 
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -48,14 +49,22 @@ def checkout_view(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Сохраняем заказ, связывая его с текущим пользователем
             order = Order(
                 name=form.cleaned_data['name'],
                 address=form.cleaned_data['address'],
                 phone=form.cleaned_data['phone'],
-                user=request.user  # Связываем заказ с текущим пользователем
+                user=request.user
             )
             order.save()
+
+            # Отправка уведомления в телеграм-бот
+            order_info = {
+                'name': order.name,
+                'address': order.address,
+                'phone': order.phone,
+                'total_price': order.total_price,
+            }
+            asyncio.run(send_order_notification(order_info))
 
             # Очистка корзины
             cart.clear()
