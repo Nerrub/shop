@@ -36,10 +36,21 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default='accepted',
     )
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Поле для общей стоимости заказа
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        # Проверяем, изменился ли статус
+        if self.pk:
+            previous = Order.objects.get(pk=self.pk)
+            if previous.status != self.status:
+                # Отправляем уведомление в телеграм бот
+                send_order_notification(self)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.status}"
     def __str__(self):
         return f"Order #{self.id} - {self.status}"
 
